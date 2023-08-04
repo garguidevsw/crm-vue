@@ -1,14 +1,14 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
-import axios from "axios";
+import ClienteService from '../services/ClienteService';
 import Heading from "../components/UI/Heading.vue";
 import RouterLink from "../components/UI/RouterLink.vue";
+import Cliente from "../components/Cliente.vue"
 
 const clientes = ref([]);
 
 onMounted(() => {
-  axios
-    .get("http://localhost:4000/clientes")
+  ClienteService.obtenerClientes()
     .then(({ data }) => {
       clientes.value = data;
     })
@@ -26,6 +26,24 @@ defineProps({
 const existenClientes = computed(() => {
   return clientes.value.length > 0;
 });
+
+const actualizarEstado = ({id, estado}) => {
+  ClienteService.cambiarEstado(id, {estado: !estado})
+    .then(response => {
+      const i = clientes.value.findIndex(cliente => cliente.id === id)
+      clientes.value[i].estado = !estado
+    })
+    .catch(error => console.log)
+}
+
+const eliminarCliente = (id) => {
+  ClienteService.eliminarCliente(id)
+    .then(response => {
+      clientes.value = clientes.value.filter( cliente => cliente.id !== id)
+    })
+    .catch(error => console.log)
+}
+
 </script>
 
 <template>
@@ -68,7 +86,10 @@ const existenClientes = computed(() => {
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-            
+              <Cliente v-for="cliente in clientes" :key="cliente.id" :cliente="cliente"
+                @actualizar-estado="actualizarEstado"
+                @eliminar-cliente="eliminarCliente"
+              />
             </tbody>
           </table>
         </div>

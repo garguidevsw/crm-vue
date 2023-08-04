@@ -1,5 +1,24 @@
 {
   "clientes": [
-    
+    {
+      "nombre": "Julio Cesar",
+      "apellido": "Garcia",
+      "email": "test@correo.com",
+      "telefono": "111-111-1111",
+      "empresa": "DevGar",
+      "puesto": "Developer Jr",
+      "estado": true,
+      "id": 1
+    },
+    {
+      "nombre": "Cesar",
+      "apellido": "Guillen",
+      "email": "test@correo.com",
+      "telefono": "111-111-1111",
+      "empresa": "DevGar",
+      "puesto": "Developer Jr",
+      "estado": true,
+      "id": 2
+    }
   ]
 }
